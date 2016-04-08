@@ -147,12 +147,12 @@ def search_item(db,table,name=False,addr=False):
          print ("----------------------------------------------------------------")
          print ("---- No such item named %s in sheet %s" %(name,valid_sheet,))
          print ("----------------------------------------------------------------")
-         search_item(proj_db,'AIPS_MAPS',name,addr)
+         search_item(proj_db,'AIPS_MAPS',name,addr)   ### if not found in Main_Map, try AIPS_MAPS
    if addr:
       search_addr = addr.replace('_','')
       search_addr = search_addr.replace('h','')  ### for usage in vim, v-style hex data
       if not re.match('^0x',search_addr):
-         search_addr = "0x"+search_addr   ### here we assume address is hex format without prefix of 0x, which is true in our log
+         search_addr = "0x"+search_addr   
       my_cursor.execute('select n_p,hex_s_a,hex_e_a,region from %s where start_addr <=? and end_addr >= ? '% table,(int(search_addr,16),int(search_addr,16)))
       my_results=my_cursor.fetchall()
       print ("Below are results for: "+search_addr)
@@ -161,7 +161,7 @@ def search_item(db,table,name=False,addr=False):
          for i in my_results:
             print(i)
             if table =="Main_Map" and i[3]=="Registers":
-               search_item(proj_db,'AIPS_MAPS',name,addr)
+               search_item(proj_db,'AIPS_MAPS',name,addr)  ### if found Registers, search deeper in AIPS_MAPS
       else:
          print ("----------------------------------------------------------------")
          print ("---- No such item match address %s in %s" %(search_addr,valid_sheet,))
