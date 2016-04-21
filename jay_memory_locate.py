@@ -19,7 +19,7 @@ Options:
              -f : choose xlsx file
              -u : force update database, when this option is opened
                   one legal xlsx file should be identified
-             --dir  : set work area; default is /home/b51816/python_study/imx_db
+             --dir  : set work area; default is /home/b51816/my_git/repository/imx_proj/imx_db
              --name : locate memory or IP by name
              --addr : locate memory or IP by address
              --help : print help
@@ -36,7 +36,7 @@ xlsx_file = False
 update = False
 addr = False
 table = False
-work_dir = "/home/b51816/python_study/imx_db"
+work_dir = "/home/b51816/my_git/repository/imx_proj/imx_db"
 s_a = 0 # Start Address
 e_a = 1 # End Address
 region = 2 # Region
