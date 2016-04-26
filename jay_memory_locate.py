@@ -160,7 +160,7 @@ def search_item(db,table,name=False,addr=False):
          print ("----------------------------------------------------------------")
          for i in my_results:
             print(i)
-            if table =="Main_Map" and i[3]=="Registers":
+            if table =="Main_Map" and (i[3]=="Registers" or i[3]=="Periph" ):
                search_item(proj_db,'AIPS_MAPS',name,addr)  ### if found Registers, search deeper in AIPS_MAPS
       else:
          print ("----------------------------------------------------------------")
