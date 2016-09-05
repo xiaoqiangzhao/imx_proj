@@ -22,19 +22,20 @@ class jay_file_manager(object):
     def __init__(self, *args):
         self.project = os.getenv('PROJECT','jay_files')
         self.workdir = os.getenv('DESIGN_DIR',os.path.dirname(os.path.abspath(sys.argv[0])))
-        cwp = os.path.dirname(os.path.abspath(os.path.realpath(sys.argv[0])))
+        self.cwp = os.path.dirname(os.path.abspath(os.path.realpath(sys.argv[0])))
         self.filelist = self.project + ".list"
-        self.filelist = os.path.join(cwp,self.filelist)
+        self.filelist = os.path.join(self.cwp,self.filelist)
         self.file_search = get_files(list_name = self.filelist, path = self.workdir)
         self.database = self.project + ".db"
-        self.database = os.path.join(cwp,self.database)
+        self.database = os.path.join(self.cwp,self.database)
         if args:
             self.filetarget = args
         else:
-            self.filetarget = ['c','h','v','vh','sv','pl','py','pm','vhd', 's', 'sh']
+            self.filetarget = ['c','h','v','vh','sv','pl','py','pm','vhd', 's', 'sh', 'arg']
         print("target file type are : "+" ".join(self.filetarget))
         print("target project is : " + self.project)
         print("target directory : "+self.workdir)
+        print("current directory : "+self.cwp)
 
     @time_cost
     def generate_file_list(self, replace = True):
@@ -44,9 +45,10 @@ class jay_file_manager(object):
     def initial_tables(self):
         with opendatabase(self.database) as cursor:
             for table_name in self.filetarget :
-                if not IsTableExist(cursor, table_name):
-                    print("Create Table %s" %table_name)
-                    cursor.execute('create table %s (id integer primary key autoincrement, path tinytext, filename tinytext)' % table_name)
+                if IsTableExist(cursor, table_name):
+                    cursor.execute('drop table %s'% table_name)
+                print("Create Table %s" %table_name)
+                cursor.execute('create table %s (id integer primary key autoincrement, path tinytext, filename tinytext)' % table_name)
 
     @time_cost
     def list2db(self):
