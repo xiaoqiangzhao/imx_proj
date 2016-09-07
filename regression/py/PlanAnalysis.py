@@ -27,11 +27,14 @@ class XlsxParser:
         self.rows = self.ws.rows
         self.headings = self.row2list(self.rows[0])
         self.testtuple = namedtuple('testtuple',self.headings)
-        self.testlist = []
+        self.testdict = {}
         for i in self.rows[1:]:
-            self.testlist.append(self.testtuple(*self.row2list(i))._asdict())
+            i_dict = self.testtuple(*self.row2list(i))._asdict()
+            if not i_dict['vec'] in self.testdict:
+                self.testdict[i_dict['vec']] = []
+            self.testdict[i_dict['vec']].append(i_dict)
         with open(self.json_file,'w') as f:
-            json.dump(self.testlist,f)
+            json.dump(self.testdict,f)
 
 
 
