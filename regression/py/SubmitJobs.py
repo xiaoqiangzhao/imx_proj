@@ -22,7 +22,7 @@ class SubmitJobs:
             os.chdir(self.cwp)
             os.system("mkdir RunShell")
         if not os.path.isdir(os.path.join(self.cwp,'RunShell',self.bom)):
-            os.chdir('RunShell')
+            os.chdir(os.path.join(self.cwp,'RunShell'))
             os.system("mkdir {bom_dir}".format(bom_dir=self.bom))
         self.shell_dir = os.path.join(self.cwp,'RunShell',self.bom)
 
@@ -64,6 +64,7 @@ class SubmitJobs:
                 test['Status'] = "MAKE_ERROR_OR_NOT_RUN"
                 make_error_or_not_run_test.append(test)
                 continue
+            test['review'] = test_logfile
             with open(test_logfile,'r') as log:
                 log.seek(0,2)  ## get the size
                 log_size = log.tell()
@@ -87,6 +88,7 @@ class SubmitJobs:
         with open(vector+".json",'w') as f:
             json.dump(result,f)
         return result
+
 
 
     def show_results(self,vector,status='all'):
